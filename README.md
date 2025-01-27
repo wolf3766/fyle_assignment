@@ -1,3 +1,10 @@
+coverage: 
+
+![coverage](https://github.com/user-attachments/assets/33532a46-f244-4879-8cd5-e2876be07bb3)
+
+test_cases:
+![test_cases](https://github.com/user-attachments/assets/08a751b9-ccc5-42b1-98a4-5da2625015c4)
+
 # Fyle Backend Challenge
 
 ## Who is this for?
