@@ -1,1 +1,2 @@
 -- Write query to find the number of grade A's given by the teacher who has graded the most assignments
+select count(*) from assignments as a where a.grade = 'A' group by a.teacher_id order by count(*) desc limit 1 

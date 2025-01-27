@@ -64,10 +64,10 @@ def upgrade():
     db.session.add(teacher_2)
     db.session.flush()
 
-    assignment_1 = Assignment(student_id=student_1.id, content='ESSAY T1')
-    assignment_2 = Assignment(student_id=student_1.id, content='THESIS T1')
-    assignment_3 = Assignment(student_id=student_2.id, content='ESSAY T2')
-    assignment_4 = Assignment(student_id=student_2.id, content='THESIS T2')
+    assignment_1 = Assignment(student_id=student_1.id, content='ESSAY T1', state='DRAFT')
+    assignment_2 = Assignment(student_id=student_1.id, content='THESIS T1', state='DRAFT')
+    assignment_3 = Assignment(student_id=student_2.id, content='ESSAY T2', state='DRAFT')
+    assignment_4 = Assignment(student_id=student_2.id, content='THESIS T2', state='DRAFT')
 
     assignment_5 = Assignment(student_id=student_1.id, content='SOLUTION T1')
 

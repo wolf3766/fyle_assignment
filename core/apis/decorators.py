@@ -1,8 +1,12 @@
 import json
+import pdb
 from flask import request
 from core.libs import assertions
 from functools import wraps
-
+from core.models.teachers import Teacher
+from core.models.students import Student
+from core.models.principals import Principal
+from core.models.users import User
 
 class AuthPrincipal:
     def __init__(self, user_id, student_id=None, teacher_id=None, principal_id=None):
@@ -32,12 +36,24 @@ def authenticate_principal(func):
             teacher_id=p_dict.get('teacher_id'),
             principal_id=p_dict.get('principal_id')
         )
+        user = User.get_by_id(p.user_id)
+        if user is None: 
+            raise ValueError("User not found")
 
         if request.path.startswith('/student'):
+            student = Student.get_by_id(p.student_id)
+            if student[0].user_id != p.user_id:
+                raise ValueError("requester should be a student")
             assertions.assert_true(p.student_id is not None, 'requester should be a student')
         elif request.path.startswith('/teacher'):
+            teacher = Teacher.get_by_id(p.teacher_id)
+            if teacher[0].user_id != p.user_id:
+                raise ValueError("requester should be a teacher")
             assertions.assert_true(p.teacher_id is not None, 'requester should be a teacher')
         elif request.path.startswith('/principal'):
+            principal = Principal.get_by_id(p.principal_id)
+            if principal[0].user_id != p.user_id:
+                raise ValueError("requester should be a principal")
             assertions.assert_true(p.principal_id is not None, 'requester should be a principal')
         else:
             assertions.assert_found(None, 'No such api')
