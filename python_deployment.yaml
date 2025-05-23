@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fyle-deployment
+  labels:
+    app: fyle
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fyle
+  template:
+    metadata:
+      labels:
+        app: fyle
+    spec:
+      containers:
+      - name: python_container
+        image: skc3766/python_fyle
+        ports:
+        - containerPort: 80
