@@ -15,7 +15,7 @@ spec:
         app: fyle
     spec:
       containers:
-      - name: python_container
-        image: skc3766/python_fyle
+      - name: python-container
+        image: skc3766/fyle
         ports:
         - containerPort: 80
