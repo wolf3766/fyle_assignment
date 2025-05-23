@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = "skc3766/fyle"
+        TAG = "latest"
+        DOCKER_CRED = "docker_cred"
+    }
+    stages {
+        stage('clone git repo') {
+            steps {
+                git branch: "main", url: "https://github.com/wolf3766/fyle_assignment.git"
+            }
+        }
+        stage('create docker image'){
+            steps {
+                sh '''
+                    docker build -t ${IMAGE_NAME} .
+                '''
+            }
+        }
+        stage('push docker image to docker hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: "${DOCKER_CRED}",
+                    usernameVariable: 'Docker_user',
+                    passwordVariable: 'Docker_pass'
+                    )]){
+                        sh ''' 
+                            docker login -u $Docker_user -p $Docker_pass
+                            docker push ${IMAGE_NAME}:${TAG}
+                        '''
+                    }
+            }
+        }
+            stage("deploy to k8s"){
+                steps{
+                    sh '''
+                    kubectl delete deployment python_deployment || true
+                    kubectl apply -f python_deployment.yaml
+                    kubectl apply -f python_service.yaml
+                    '''
+                }
+            }
+    }
+}
